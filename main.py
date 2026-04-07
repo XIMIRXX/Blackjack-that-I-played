@@ -48,12 +48,12 @@ def user_ask():
     global user, comp, user_cards
 
     while True:
-        print(f"Your cards: {user_cards}\nComputer's cards: {comp_cards}")
         if user >= 21 or comp >= 21:
             calculate_score()
             break
+        print(f"Your cards: {', '.join(map(str, user_cards))}\nIn total {user}\nComputer's cards: {comp_cards[0]}")
 
-        ask = input("Do you want a new card or it is enough? (yes/enough): ")
+        ask = input("Do you want a new card or no? (yes/no): ")
 
         if ask == "yes":
             new_card = deal_card()
@@ -62,8 +62,8 @@ def user_ask():
                 ace_checker()
             user = sum(user_cards)
 
-        elif ask == "enough":
-            while comp < user and comp < 21:
+        elif ask == "no":
+            while comp < user and comp < 21 and user < 21:
                 comp_cards.append(deal_card())
                 comp = sum(comp_cards)
 
@@ -87,7 +87,7 @@ def game_over():
             print("Invalid input, please try again!")
 
 def calculate_score():
-    print(f"\n\n\nYour cards: {user_cards}\nComputer's cards: {comp_cards}\n")
+    print(f"\n\n\nYour cards: {', '.join(map(str, user_cards))}\nIn total {user}\nComputer's cards: {', '.join(map(str, comp_cards))}\n\nIn total {comp}")
     if user > 21:
         print("You lost!")
     elif comp > 21:
