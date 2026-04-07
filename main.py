@@ -1,6 +1,5 @@
 # Make sure art.py is in the same directory
 
-
 import art
 import random
 
@@ -21,8 +20,6 @@ def game_data():
 def game_logic():
     global comp, user
     user_cards.append(deal_card())
-    if 11 in user_cards:
-        ace_checker()
     comp_cards.append(deal_card())
 
     user = sum(user_cards)
@@ -30,27 +27,22 @@ def game_logic():
 
     user_ask()
 
-def ace_checker():
-    global user, user_cards
-    user_cards.remove(11)
-    while True:
-        ask_user = input("You have Ace in your deck, to what you want to change it 11 or 1? ")
-        if ask_user == "11":
-            user_cards.append(11)
-            break
-        elif ask_user == "1":
-            user_cards.append(1)
-            break
-        else:
-            print("Invalid input, try again")
-    user = sum(user_cards)
 def user_ask():
     global user, comp, user_cards
 
     while True:
-        if user >= 21 or comp >= 21:
+        if user == 21 and len(user_cards) == 2:
+            print("It is Blackjack!")
             calculate_score()
             break
+        elif comp == 21 and len(comp_cards) == 2:
+            print("Computer has Blackjack!")
+            calculate_score()
+            break
+        elif user >= 21 or comp >= 21:
+            calculate_score()
+            break
+
         print(f"Your cards: {', '.join(map(str, user_cards))}\nIn total {user}\nComputer's cards: {comp_cards[0]}")
 
         ask = input("Do you want a new card or no? (yes/no): ")
@@ -58,8 +50,6 @@ def user_ask():
         if ask == "yes":
             new_card = deal_card()
             user_cards.append(new_card)
-            if new_card == 11:
-                ace_checker()
             user = sum(user_cards)
 
         elif ask == "no":
@@ -87,6 +77,15 @@ def game_over():
             print("Invalid input, please try again!")
 
 def calculate_score():
+    global user, comp, user_cards, comp_cards
+    if 11 in user_cards and user > 21:
+        user_cards.remove(11)
+        user_cards.append(1)
+    if 11 in comp_cards and comp > 21:
+        comp_cards.remove(11)
+        comp_cards.append(1)
+    user = sum(user_cards)
+    comp = sum(comp_cards)
     print(f"\n\n\nYour cards: {', '.join(map(str, user_cards))}\nIn total {user}\nComputer's cards: {', '.join(map(str, comp_cards))}\n\nIn total {comp}")
     if user > 21:
         print("You lost!")
@@ -94,10 +93,6 @@ def calculate_score():
         print("Congratulations you won!")
     elif user == comp:
         print("It is a draw!")
-    elif user == 21 and len(user_cards) == 2:
-        print("It is Blackjack!!! You won")
-    elif comp == 21 and len(comp_cards) == 2:
-        print("Computer has Blackjack! You lost!")
     elif user == 21:
         print("Congratulations you won!")
     elif comp == 21:
