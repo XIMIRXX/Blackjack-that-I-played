@@ -5,7 +5,7 @@ import art
 import random
 
 def deal_card():
-    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10, 10]
     card = random.choice(cards)
     return card
 def game_data():
@@ -31,7 +31,7 @@ def game_logic():
     user_ask()
 
 def ace_checker():
-    global user
+    global user, user_cards
     user_cards.remove(11)
     while True:
         ask_user = input("You have Ace in your deck, to what you want to change it 11 or 1? ")
@@ -45,9 +45,10 @@ def ace_checker():
             print("Invalid input, try again")
     user = sum(user_cards)
 def user_ask():
-    global user, comp
+    global user, comp, user_cards
 
     while True:
+        print(f"Your cards: {user_cards}\nComputer's cards: {comp_cards}")
         if user >= 21 or comp >= 21:
             calculate_score()
             break
@@ -74,7 +75,7 @@ def user_ask():
 
 def game_over():
     while True:
-        want = input("Do you want to play again?(yes/no): ")
+        want = input("\nDo you want to play again?(yes/no): ")
         if want == "yes":
             game_data()
             game_logic()
@@ -86,6 +87,7 @@ def game_over():
             print("Invalid input, please try again!")
 
 def calculate_score():
+    print(f"\n\n\nYour cards: {user_cards}\nComputer's cards: {comp_cards}\n")
     if user > 21:
         print("You lost!")
     elif comp > 21:
@@ -101,7 +103,6 @@ def calculate_score():
     else:
         print("You lost!")
 
-    print(f"Your cards: {user_cards}\nComputer's cards: {comp_cards}")
     game_over()
 
 print(art.logo)
