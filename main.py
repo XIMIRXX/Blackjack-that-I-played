@@ -94,6 +94,10 @@ def calculate_score():
         print("Congratulations you won!")
     elif user == comp:
         print("It is a draw!")
+    elif user == 21 and len(user_cards) == 2:
+        print("It is Blackjack!!! You won")
+    elif comp == 21 and len(comp_cards) == 2:
+        print("Computer has Blackjack! You lost!")
     elif user == 21:
         print("Congratulations you won!")
     elif comp == 21:
